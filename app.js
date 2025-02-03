@@ -26,25 +26,25 @@ const products = [
     {
       name: 'Pc Gaming',
       url: 'img/pc-gaming1.jpg',
-      category: 'PcGaming',
+      category: 'pcgaming',
       price: 799.99,
     },
     {
         name: 'Pc Gaming',
         url: 'img/pc-gaming2.jpg',
-        category: 'PcGaming',
+        category: 'pcgaming',
         price: 699.99,
       },
       {
         name: 'Pc Gaming',
         url: 'img/pc-gaming3.jpg',
-        category: 'PcGaming',
+        category: 'pcgaming',
         price: 899.99,
       },
       {
         name: 'Pc Gaming',
         url: 'img/pcgaming4.png',
-        category: 'PcGaming',
+        category: 'pcgaming',
         price: 699.99,
       },
       {
@@ -109,41 +109,109 @@ const products = [
       },
   ];
 
-  //Select Dom Elements
-  const productWrapper = document.getElementById('products-wrapper');
-  const checkboxes = document.querySelectorAll('.check');
-  const filterContainer = document.getElementById('filters-container');
-  const inputSearch = document.getElementById('search');
-  const CartCount = document.getElementById('cart-count');
+// Get DOM elements
+const productsWrapper = document.getElementById('products-wrapper');
+const checkboxes = document.querySelectorAll('.check');
+const filtersContainer = document.getElementById('filters-container');
+const searchInput = document.getElementById('search');
+const cartButton = document.getElementById('cart-button');
+const cartCount = document.getElementById('cart-count');
 
-  // Init cart item count
+// Initialize cart item count
 let cartItemCount = 0;
 
-// Init product element array
+// Initialize products
 const productElements = [];
 
-//loop over products and create element
-products.forEach((product)=>
-    {
-    const productElement  = document.createElement('div');
-
-    productElement.className = 'item space-y-2';
-    productElement.innerHTML = ` 
-                <!-- Contenitore immagine -->
-                <p class="text-center font-bold">${product.name.toLocaleString()}</p>
-                <div class="bg-gray-100 flex justify-center relative overflow-hidden group cursor-pointer border rounded-xl">
-                    <img src="${product.url}" alt="${product.name}" class="w-64 h-64">
-                </div>
-                <p class="text-center font-bold">Price: ${product.price.toLocaleString()}$ </p>
-                <!-- Pulsante posizionato sotto -->
-                <button class="w-full bg-blue-500 text-white font-bold px-6 py-2 rounded-lg transition duration-300 hover:bg-blue-600 cursor-pointer">
-                    Buy Now!
-                </button>';`;
-
-                productElements.push(productElement);
-                productWrapper.appendChild(productElement);
+// Loop over the products and create the product elements
+products.forEach((product) => {
+  const productElement = createProductElement(product);
+  productElements.push(productElement);
+  productsWrapper.appendChild(productElement);
 });
 
+// Add filter event listeners
+filtersContainer.addEventListener('change', filterProducts);
+searchInput.addEventListener('input', filterProducts);
 
-// Create  product element
+// Create product element
+function createProductElement(product) {
+  const productElement = document.createElement('div');
 
+  productElement.className = 'item space-y-2';
+
+  productElement.innerHTML = `<div
+  class="bg-gray-100 flex justify-center relative overflow-hidden group cursor-pointer border rounded-xl"
+>
+  <img
+    src="${product.url}"
+    alt="${product.name}"
+    class="w-full h-full object-cover"
+  />
+  <button class="status bg-black text-white absolute bottom-0 left-0 right-0 text-center py-2 translate-y-full transition group-hover:translate-y-0"
+    >Add To Cart</button
+  >
+</div>
+<p class="text-xl">${product.name}</p>
+<strong>$${product.price.toLocaleString()}</strong>`;
+
+  productElement
+    .querySelector('.status')
+    .addEventListener('click', updateCart);
+
+  return productElement;
+}
+
+// Toggle add/remove from cart
+function updateCart(e) {
+  const statusEl = e.target;
+
+  if (statusEl.classList.contains('added')) {
+    // Remove from cart
+    statusEl.classList.remove('added');
+    statusEl.innerText = 'Add To Cart';
+    statusEl.classList.remove('bg-red-600');
+    statusEl.classList.add('bg-gray-800');
+
+    cartItemCount--;
+  } else {
+    // Add to cart
+    statusEl.classList.add('added');
+    statusEl.innerText = 'Remove From Cart';
+    statusEl.classList.remove('bg-gray-800');
+    statusEl.classList.add('bg-red-600');
+
+    cartItemCount++;
+  }
+
+  // Update cart item count
+  cartCount.innerText = cartItemCount.toString();
+}
+
+// Filter products by search or checkbox
+function filterProducts() {
+  // Get search term
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  // Get checked categories
+  const checkedCategories = Array.from(checkboxes)
+    .filter((check) => check.checked)
+    .map((check) => check.id);
+
+  // Loop over products and check for matches
+  productElements.forEach((productElement, index) => {
+    const product = products[index];
+
+    // Check to see if product matches the search or checked items
+    const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm);
+    const isInCheckedCategory =
+      checkedCategories.length === 0 ||
+      checkedCategories.includes(product.category);
+
+    // Show or hide product based on matches
+    if (matchesSearchTerm && isInCheckedCategory) {
+      productElement.classList.remove('hidden');
+    } else {
+      productElement.classList.add('hidden');
+    }
+  });
+}
