@@ -107,5 +107,7 @@ const products = [
         category: 'cameras',
         price: 399.99,
       },
-    
   ];
+
+  //Select Dom Elements
+  const productWrapper = document.getElementById('');
