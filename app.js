@@ -110,4 +110,35 @@ const products = [
   ];
 
   //Select Dom Elements
-  const productWrapper = document.getElementById('');
+  const productWrapper = document.getElementById('products-wrapper');
+  const checkboxes = document.querySelectorAll('.check');
+  const filterContainer = document.getElementById('filters-container');
+  const inputSearch = document.getElementById('search');
+  const CartCount = document.getElementById('cart-count');
+
+  // Init cart item count
+let cartItemCount = 0;
+
+// Init product element array
+const productElements = [];
+
+//loop over products and create element
+products.forEach((product)=>{
+    const productElement  = document.createElement('div');
+
+    productElement.className = 'item space-y-2';
+    productElement.innerHTML = ` 
+                <!-- Contenitore immagine -->
+                <p class="text-center font-bold">${product.name.toLocaleString()}</p>
+                <div class="bg-gray-100 flex justify-center relative overflow-hidden group cursor-pointer border rounded-xl">
+                    <img src="${product.url}" alt="${product.name}" class="w-full h-full object-cover">
+                </div>
+                <p class="text-center font-bold">Price: ${product.price.toLocaleString()}$ </p>
+                <!-- Pulsante posizionato sotto -->
+                <button class="w-full bg-blue-500 text-white font-bold px-6 py-2 rounded-lg transition duration-300 hover:bg-blue-600 cursor-pointer">
+                    Buy Now!
+                </button>';`;
+
+                productElements.push(productElement);
+                productWrapper.appendChild(productElement);
+});
