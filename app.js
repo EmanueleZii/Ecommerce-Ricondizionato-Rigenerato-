@@ -37,7 +37,7 @@ const products = [
       },
       {
         name: 'Pc Gaming',
-        url: 'img/pc-gaming3.jpg',
+        url: 'img/Pc-gaming3.jpg',
         category: 'pcgaming',
         price: 899.99,
       },
