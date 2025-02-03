@@ -146,7 +146,7 @@ function createProductElement(product) {
   <img
     src="${product.url}"
     alt="${product.name}"
-    class="w-full h-full object-cover"
+    class="w-64 h-64"
   />
   <button class="status bg-black text-white absolute bottom-0 left-0 right-0 text-center py-2 translate-y-full transition group-hover:translate-y-0"
     >Add To Cart</button
