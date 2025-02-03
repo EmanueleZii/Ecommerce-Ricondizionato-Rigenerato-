@@ -19,7 +19,7 @@ const products = [
     },
     {
       name: 'xbox one s',
-      url: 'img/xbox-one-s-12-1.jpg',
+      url: 'img/XboxOneS.png',
       category: 'console',
       price: 199.99,
     },
@@ -43,7 +43,7 @@ const products = [
       },
       {
         name: 'Pc Gaming',
-        url: 'img/pcgaming4.jpg',
+        url: 'img/pcgaming4.png',
         category: 'PcGaming',
         price: 699.99,
       },
@@ -123,7 +123,8 @@ let cartItemCount = 0;
 const productElements = [];
 
 //loop over products and create element
-products.forEach((product)=>{
+products.forEach((product)=>
+    {
     const productElement  = document.createElement('div');
 
     productElement.className = 'item space-y-2';
@@ -131,7 +132,7 @@ products.forEach((product)=>{
                 <!-- Contenitore immagine -->
                 <p class="text-center font-bold">${product.name.toLocaleString()}</p>
                 <div class="bg-gray-100 flex justify-center relative overflow-hidden group cursor-pointer border rounded-xl">
-                    <img src="${product.url}" alt="${product.name}" class="w-full h-full object-cover">
+                    <img src="${product.url}" alt="${product.name}" class="w-64 h-64">
                 </div>
                 <p class="text-center font-bold">Price: ${product.price.toLocaleString()}$ </p>
                 <!-- Pulsante posizionato sotto -->
@@ -142,3 +143,7 @@ products.forEach((product)=>{
                 productElements.push(productElement);
                 productWrapper.appendChild(productElement);
 });
+
+
+// Create  product element
+
